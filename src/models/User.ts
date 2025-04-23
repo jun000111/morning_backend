@@ -1,7 +1,15 @@
-export interface User{
-    name:string
-    email:string
-    role:number 
-    clerkId:string
+export interface UserRegisterDTO {
+  name: string;
+  email: string;
+  clerkId: string;
+  role?: number;
+}
 
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: number;
+  clerkId: string;
+  createdAt: string;
 }

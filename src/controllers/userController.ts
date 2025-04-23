@@ -1,9 +1,8 @@
-import {Request , Response} from "express"
-import * as userService from "../services/userService"
+import { Request, Response } from "express";
+import * as userService from "../services/authService";
 
-export const registerUser = async(req:Request,res:Response)=>{
-    const {name,email,clerkId,role} = req.body
-    
-    const newUser = await userService.createUser(name,email,clerkId,role)
-    res.status(201).json(newUser)
-}
+export const registerUser = async (req: Request, res: Response) => {
+  console.log("controller");
+  const newUser = await userService.registerUser(req.body);
+  res.status(201).json(newUser);
+};
