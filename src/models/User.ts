@@ -2,7 +2,6 @@ export interface UserRegisterDTO {
   name: string;
   email: string;
   clerkId: string;
-  role?: number;
 }
 
 export interface User {

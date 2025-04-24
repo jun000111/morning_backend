@@ -5,11 +5,10 @@ export const registerUser = async ({
   name,
   email,
   clerkId,
-  role = 2,
 }: UserRegisterDTO): Promise<User> => {
   const result = await pool.query(
     `INSERT INTO users (name, email,role, clerk_id ) VALUES($1,$2,$3, $4) RETURNING *`,
-    [name, email, role, clerkId]
+    [name, email, 2, clerkId]
   );
   return result.rows[0];
 };
