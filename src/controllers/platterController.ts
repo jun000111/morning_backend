@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as platterService from "../services/platterService";
 
-export const getAllPlattersController = async (
+export const getAllPlatters = async (
   req: Request,
   res: Response,
   next: NextFunction

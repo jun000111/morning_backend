@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
+import { GetUserAuthInfoRequest } from "../types";
 import * as authService from "../services/authService";
 import { getUserByClerkId } from "../services/userService";
 
-export const registerUserController = async (
-  req: Request,
+export const registerUser = async (
+  req: GetUserAuthInfoRequest,
   res: Response,
   next: NextFunction
 ) => {

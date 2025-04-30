@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { getAllPlattersController } from "../controllers/platterController";
+import { getAllPlatters } from "../controllers/platterController";
 
 const platterRoutes = Router();
-platterRoutes.get("/", getAllPlattersController);
+platterRoutes.get("/", getAllPlatters);
 
 export default platterRoutes;

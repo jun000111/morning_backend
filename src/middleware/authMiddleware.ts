@@ -3,9 +3,10 @@ import { verifyToken } from "@clerk/backend";
 import { clerkClient } from "@clerk/clerk-sdk-node";
 import { HttpError } from "../utils/HttpError";
 import { ENV } from "../config/env";
+import { GetUserAuthInfoRequest } from "../types";
 
 export const authMiddleware = async (
-  req: Request,
+  req: GetUserAuthInfoRequest,
   res: Response,
   next: NextFunction
 ) => {
