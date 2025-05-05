@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
-import userRoutes from "./routes/userRoutes";
-import { errorHandler } from "./middleware/errorHandler";
-import platterRoutes from "./routes/platterRoutes";
+import userRoutes from "./routes/user.routes";
+import { errorHandler } from "./middleware/errorHandler.middleware";
+import platterRoutes from "./routes/platter.routes";
 
 const app = express();
 app.use(cors());

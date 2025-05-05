@@ -1,6 +1,8 @@
-import { User } from "../models/User";
-import { Request } from "express";
+import { ClerkUser } from "../models/user.model";
+import "express";
 
-export interface GetUserAuthInfoRequest extends Request {
-  user?: Pick<User, "name" | "email" | "clerkId">;
+declare module "express" {
+  interface Request {
+    clerkUser?: ClerkUser;
+  }
 }

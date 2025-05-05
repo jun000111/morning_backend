@@ -3,10 +3,9 @@ import { verifyToken } from "@clerk/backend";
 import { clerkClient } from "@clerk/clerk-sdk-node";
 import { HttpError } from "../utils/HttpError";
 import { ENV } from "../config/env";
-import { GetUserAuthInfoRequest } from "../types";
 
 export const authMiddleware = async (
-  req: GetUserAuthInfoRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -28,11 +27,12 @@ export const authMiddleware = async (
 
     // Fetch Clerk user
     const clerkUser = await clerkClient.users.getUser(payload.sub);
+    console.log(clerkUser);
 
     // Attach full user info to request
-    req.user = {
-      name: clerkUser.firstName ?? "Unnamed",
-      email: clerkUser.emailAddresses[0].emailAddress,
+    req.clerkUser = {
+      username: clerkUser.username ?? "Unnamed",
+      emailAddress: clerkUser.emailAddresses[0].emailAddress,
       clerkId: clerkUser.id,
     };
 
