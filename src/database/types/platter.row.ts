@@ -4,11 +4,11 @@ export interface PlatterIngredientNutritionRow {
   description: string;
   ingredient_id: number;
   ingredient_name: string;
-  calories: number;
-  carbs: number;
-  fat: number;
-  sugar: number;
-  fiber: number;
-  sodium: number;
-  cholesterol: number;
+  calories: string;
+  carbs: string;
+  fat: string;
+  sugar: string;
+  fiber: string;
+  sodium: string;
+  cholesterol: string;
 }
