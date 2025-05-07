@@ -36,7 +36,11 @@ export const authMiddleware = async (
     };
 
     next();
-  } catch (error) {
-    next(new HttpError("Unauthorized", 401));
+  } catch (error: any) {
+    if (error instanceof HttpError) {
+      next(error); // pass it through directly
+    } else {
+      next(new HttpError(error?.message || "Unauthorized", 401));
+    }
   }
 };
