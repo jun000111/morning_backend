@@ -38,7 +38,6 @@ export const mapRowToPlatterIngredientNutrition = (
       sodium: Number(row.sodium),
       cholesterol: Number(row.cholesterol),
     };
-    console.log(ingredientNutrition);
 
     acc[row.name].ingredientsNutrition.push(ingredientNutrition);
     acc[row.name].ingredients.push({

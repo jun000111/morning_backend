@@ -27,7 +27,6 @@ export const authMiddleware = async (
 
     // Fetch Clerk user
     const clerkUser = await clerkClient.users.getUser(payload.sub);
-    console.log(clerkUser);
 
     // Attach full user info to request
     req.clerkUser = {
