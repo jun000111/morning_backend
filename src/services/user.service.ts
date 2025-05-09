@@ -1,10 +1,10 @@
-import { User } from "../models/user.model";
+import { UserResponseDTO } from "../dto/user.dto";
 import { getUserByClerkIdQuery } from "../database/queries/users.queries";
 import { mapUserRowToUser } from "../database/mappers/user.mapper";
 
 export const getUserByClerkId = async (
   clerkId: string
-): Promise<User | null> => {
+): Promise<UserResponseDTO | null> => {
   const userRow = await getUserByClerkIdQuery(clerkId);
   let user;
   if (userRow) {

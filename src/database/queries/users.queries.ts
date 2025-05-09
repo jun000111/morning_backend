@@ -7,7 +7,7 @@ export const getUserByClerkIdQuery = async (
 ): Promise<UserRow | null> => {
   try {
     const result = await pool.query(
-      `SELECT users.name, users.email, users.clerk_id 
+      `SELECT users.user_name,users.user_group, users.email, users.clerk_id 
         FROM users
         WHERE users.clerk_id = $1
         `,
@@ -19,6 +19,7 @@ export const getUserByClerkIdQuery = async (
     }
     return result.rows[0];
   } catch (e: any) {
+    console.error("error in getUserByClerkIdQuery", e);
     throw new HttpError("Failed to get user by clerkID", 500);
   }
 };

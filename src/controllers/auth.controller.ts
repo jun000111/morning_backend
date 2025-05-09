@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as authService from "../services/auth.service";
 import { getUserByClerkId } from "../services/user.service";
+import { UserRegisterDTO } from "../dto/user.dto";
 
 export const registerUser = async (
   req: Request,
@@ -9,6 +10,8 @@ export const registerUser = async (
 ) => {
   try {
     const { clerkId } = req.clerkUser!;
+    const generatedUser: UserRegisterDTO = req.body!;
+    console.log(generatedUser);
 
     const existingUser = await getUserByClerkId(clerkId);
 
@@ -17,7 +20,10 @@ export const registerUser = async (
       return;
     }
 
-    const newUser = await authService.registerUser(req.clerkUser!);
+    const newUser = await authService.registerUser(
+      req.clerkUser!,
+      generatedUser
+    );
 
     res.status(201).json(newUser);
   } catch (error) {

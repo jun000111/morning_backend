@@ -30,7 +30,6 @@ export const authMiddleware = async (
 
     // Attach full user info to request
     req.clerkUser = {
-      username: clerkUser.username ?? "Unnamed",
       emailAddress: clerkUser.emailAddresses[0].emailAddress,
       clerkId: clerkUser.id,
     };
