@@ -3,7 +3,7 @@ import * as authService from "../services/auth.service";
 import { getUserByClerkId } from "../services/user.service";
 import { UserRegisterDTO } from "../dto/user.dto";
 
-export const registerUser = async (
+export const registerUserHandler = async (
   req: Request,
   res: Response,
   next: NextFunction

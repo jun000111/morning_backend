@@ -1,60 +1,91 @@
-import {
-  PlatterIngredientNutrition,
-  IngredientNutrition,
-} from "../../models/platter.model";
-import { PlatterIngredientNutritionRow } from "../types/platter.row";
+import { IngredientBaseDTO } from "../../dto/ingredient.dto";
+import { NutritionBaseDTO } from "../../dto/nutrition.dto";
+import { CalendarPlatterDTO, PlatterDTO } from "../../dto/platter.dto";
+import { CalendarPlatterRow, PlatterRow } from "../types/platter.row";
 
-export const mapRowToPlatterIngredientNutrition = (
-  rows: PlatterIngredientNutritionRow[]
-): Record<string, PlatterIngredientNutrition> => {
-  const plattersInfo = rows.reduce((acc, row) => {
-    if (!acc[row.name]) {
-      acc[row.name] = {
-        id: row.id,
-        name: row.name,
-        description: row.description,
-        nutriSummary: {
-          calories: 0,
-          carbs: 0,
-          fat: 0,
-          sugar: 0,
-          fiber: 0,
-          sodium: 0,
-          cholesterol: 0,
-        },
+const createEmptyNutrition = (): NutritionBaseDTO => ({
+  calories: 0,
+  carbs: 0,
+  fat: 0,
+  sugar: 0,
+  fiber: 0,
+  sodium: 0,
+  cholesterol: 0,
+});
+
+const addNutriSummary = (
+  summary: NutritionBaseDTO,
+  addition: NutritionBaseDTO
+): NutritionBaseDTO => {
+  summary.calories += addition.calories;
+  summary.carbs += addition.carbs;
+  summary.fat += addition.fat;
+  summary.sugar += addition.sugar;
+  summary.fiber += addition.fiber;
+  summary.sodium += addition.sodium;
+  summary.cholesterol += addition.cholesterol;
+  return summary;
+};
+
+const buildNutritionFromRow = (
+  row: PlatterRow
+): IngredientBaseDTO & NutritionBaseDTO => ({
+  id: row.ingredient_id,
+  name: row.ingredient_name,
+  calories: Number(row.calories),
+  carbs: Number(row.carbs),
+  fat: Number(row.fat),
+  sugar: Number(row.sugar),
+  fiber: Number(row.fiber),
+  sodium: Number(row.sodium),
+  cholesterol: Number(row.cholesterol),
+});
+
+function mapRowToPlatterBase<T extends object>(
+  rows: (PlatterRow & T)[],
+  getExtraAttributes: (row: PlatterRow & T) => T
+): (PlatterDTO & T)[] {
+  const plattersInfo: Record<string, PlatterDTO & T> = {};
+
+  for (const row of rows) {
+    if (!plattersInfo[row.platter_name]) {
+      plattersInfo[row.platter_name] = {
+        id: row.platter_id,
+        name: row.platter_name,
+        description: row.platter_description,
+        ...getExtraAttributes(row),
+        nutriSummary: createEmptyNutrition(),
         ingredients: [],
-        ingredientsNutrition: [],
+        ingredientsNutrition: {},
       };
     }
 
-    const ingredientNutrition: IngredientNutrition = {
-      id: row.ingredient_id,
-      name: row.ingredient_name,
-      calories: Number(row.calories),
-      carbs: Number(row.carbs),
-      fat: Number(row.fat),
-      sugar: Number(row.sugar),
-      fiber: Number(row.fiber),
-      sodium: Number(row.sodium),
-      cholesterol: Number(row.cholesterol),
-    };
+    const nutrition = buildNutritionFromRow(row);
 
-    acc[row.name].ingredientsNutrition.push(ingredientNutrition);
-    acc[row.name].ingredients.push({
-      id: ingredientNutrition.id,
-      name: ingredientNutrition.name,
-    });
+    const platter = plattersInfo[row.platter_name];
 
-    acc[row.name].nutriSummary.calories += ingredientNutrition.calories;
-    acc[row.name].nutriSummary.carbs += ingredientNutrition.carbs;
-    acc[row.name].nutriSummary.fat += ingredientNutrition.fat;
-    acc[row.name].nutriSummary.sugar += ingredientNutrition.sugar;
-    acc[row.name].nutriSummary.fiber += ingredientNutrition.fiber;
-    acc[row.name].nutriSummary.sodium += ingredientNutrition.sodium;
-    acc[row.name].nutriSummary.cholesterol += ingredientNutrition.cholesterol;
+    platter.nutriSummary = addNutriSummary(platter.nutriSummary, nutrition);
+    platter.ingredients.push({ id: nutrition.id, name: nutrition.name });
+    platter.ingredientsNutrition[nutrition.name] = nutrition;
+  }
 
-    return acc;
-  }, {} as Record<string, PlatterIngredientNutrition>);
+  return Object.values(plattersInfo);
+}
 
-  return plattersInfo;
+export const mapRowToPlatter = (rows: PlatterRow[]): PlatterDTO[] => {
+  return mapRowToPlatterBase(rows, () => ({}));
+};
+
+export const mapRowToCalendarPlatter = (
+  rows: CalendarPlatterRow[]
+): CalendarPlatterDTO[] => {
+  const calendarPlatter = mapRowToPlatterBase(rows, (row) => ({
+    date: row.date,
+  }));
+  calendarPlatter.map((platter) => {
+    const date = new Date(platter.date);
+    const formattedDate = date.toISOString().split("T")[0];
+    platter.date = formattedDate;
+  });
+  return calendarPlatter;
 };
