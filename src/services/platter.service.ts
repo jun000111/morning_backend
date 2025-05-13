@@ -11,9 +11,13 @@ import { HttpError } from "../utils/HttpError";
 
 export const getAllPlatters = async (): Promise<PlatterDTO[]> => {
   try {
-    const platterRows = await getAllPlattersQuery();
+    const { platterNutritionRow, platterIngredientRow } =
+      await getAllPlattersQuery();
 
-    const platterMap = mapRowToPlatter(platterRows);
+    const platterMap = mapRowToPlatter(
+      platterNutritionRow,
+      platterIngredientRow
+    );
 
     return platterMap;
   } catch (err: unknown) {
@@ -28,9 +32,13 @@ export const getAllPlatters = async (): Promise<PlatterDTO[]> => {
 
 export const getCalendarPlatters = async (): Promise<CalendarPlatterDTO[]> => {
   try {
-    const platterRows = await getCalendarPlattersQuery();
+    const { calendarPlatterRow, platterIngredientRow } =
+      await getCalendarPlattersQuery();
 
-    const platterMap = mapRowToCalendarPlatter(platterRows);
+    const platterMap = mapRowToCalendarPlatter(
+      calendarPlatterRow,
+      platterIngredientRow
+    );
 
     return platterMap;
   } catch (err: unknown) {
