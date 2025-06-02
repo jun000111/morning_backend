@@ -68,7 +68,6 @@ export const mapRowToCalendarPlatter = (
 
   for (const platter of calendarPlatterRows) {
     const basePlatter = platterInfo[platter.platter_id];
-    const date = new Date(platter.date).toLocaleDateString();
     if (basePlatter) {
       calendarPlatters.push({
         ...basePlatter,
